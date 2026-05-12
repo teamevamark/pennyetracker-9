@@ -44,6 +44,7 @@ function Locations() {
           parentId={districtId}
           selectedId={panchayathId}
           onSelect={setPanchayathId}
+          extraField={{ key: "ward_count", label: "Ward count (e.g. 25)", type: "number" }}
         />
         <Column
           title="Wards"
