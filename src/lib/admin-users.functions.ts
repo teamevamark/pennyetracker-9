@@ -12,7 +12,7 @@ const schema = z.object({
 });
 
 export const createAdminUser = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
+  .middleware([attachSupabaseAuth, requireSupabaseAuth])
   .inputValidator((input: unknown) => schema.parse(input))
   .handler(async ({ data, context }) => {
     // Verify caller is super_admin
