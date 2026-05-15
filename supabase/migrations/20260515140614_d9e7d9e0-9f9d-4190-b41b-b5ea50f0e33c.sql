@@ -1,0 +1,1 @@
+ALTER TABLE public.delivery_staff ADD COLUMN alt_phone text;

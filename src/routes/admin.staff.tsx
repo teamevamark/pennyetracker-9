@@ -141,7 +141,7 @@ function StaffPage() {
 
 function AddStaffDialog({ panchayaths, wards, onClose }: { panchayaths: any[]; wards: any[]; onClose: () => void }) {
   const qc = useQueryClient();
-  const [form, setForm] = useState({ full_name: "", phone: "", email: "", status: "active" });
+  const [form, setForm] = useState({ full_name: "", phone: "", alt_phone: "", email: "", status: "active" });
   const [selectedPanchayaths, setSelectedPanchayaths] = useState<string[]>([]);
   const [selectedWards, setSelectedWards] = useState<string[]>([]);
 

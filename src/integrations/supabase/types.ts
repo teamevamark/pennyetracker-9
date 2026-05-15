@@ -16,6 +16,7 @@ export type Database = {
     Tables: {
       delivery_staff: {
         Row: {
+          alt_phone: string | null
           created_at: string
           email: string | null
           full_name: string
@@ -29,6 +30,7 @@ export type Database = {
           ward_id: string | null
         }
         Insert: {
+          alt_phone?: string | null
           created_at?: string
           email?: string | null
           full_name: string
@@ -42,6 +44,7 @@ export type Database = {
           ward_id?: string | null
         }
         Update: {
+          alt_phone?: string | null
           created_at?: string
           email?: string | null
           full_name?: string
