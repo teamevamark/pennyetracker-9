@@ -346,14 +346,23 @@ function NodeDialog({
   cfg: GraphConfig;
   existing: any[];
   excludeIds: string[];
-  onCreate: (p: { name: string; extra?: string; direction?: Direction }) => void;
+  onCreate: (p: { name: string; parentId: string; direction?: Direction }) => void;
   onConnect: (targetId: string, direction: Direction) => void;
   pending: boolean;
 }) {
   const [name, setName] = useState("");
-  const [extra, setExtra] = useState("");
+  const [parentId, setParentId] = useState("");
   const [pickId, setPickId] = useState("");
   const [pickSearch, setPickSearch] = useState("");
+
+  const { data: parents = [] } = useQuery({
+    queryKey: [cfg.parentRef.table, "parents"],
+    queryFn: async () => {
+      const { data, error } = await supabase.from(cfg.parentRef.table).select("id,name").order("name");
+      if (error) throw error;
+      return data as { id: string; name: string }[];
+    },
+  });
 
   const choices = useMemo(() => {
     const q = pickSearch.trim().toLowerCase();
@@ -363,7 +372,7 @@ function NodeDialog({
       .slice(0, 50);
   }, [existing, excludeIds, pickSearch]);
 
-  const reset = () => { setName(""); setExtra(""); setPickId(""); setPickSearch(""); };
+  const reset = () => { setName(""); setParentId(""); setPickId(""); setPickSearch(""); };
 
   const title =
     kind === "create"
@@ -406,18 +415,21 @@ function NodeDialog({
         ) : (
           <div className="space-y-2">
             <Input placeholder={`${cfg.label} name`} value={name} onChange={(e) => setName(e.target.value)} />
-            {cfg.extraField && (
-              <Input
-                placeholder={cfg.extraField.label}
-                value={extra}
-                onChange={(e) => setExtra(e.target.value)}
-              />
-            )}
+            <select
+              value={parentId}
+              onChange={(e) => setParentId(e.target.value)}
+              className="h-9 w-full rounded-md border border-input bg-transparent px-3 text-sm"
+            >
+              <option value="">Select {cfg.parentRef.label}...</option>
+              {parents.map((p) => (
+                <option key={p.id} value={p.id}>{p.name}</option>
+              ))}
+            </select>
             <DialogFooter>
               <Button
-                disabled={!name || pending || (cfg.extraField?.required && !extra)}
+                disabled={!name || !parentId || pending}
                 onClick={() =>
-                  onCreate({ name, extra: extra || undefined, direction: kind === "add" ? dir : undefined })
+                  onCreate({ name, parentId, direction: kind === "add" ? dir : undefined })
                 }
               >
                 Create{kind === "add" ? " & Connect" : ""}
