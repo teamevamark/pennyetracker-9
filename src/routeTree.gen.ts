@@ -13,14 +13,15 @@ import { Route as LandingRouteImport } from './routes/landing'
 import { Route as DeliveryPartnersRouteImport } from './routes/delivery-partners'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AdminRouteImport } from './routes/admin'
+import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as MarkingIndexRouteImport } from './routes/marking.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
-import { Route as MarkingWardRouteImport } from './routes/marking.ward'
-import { Route as MarkingPanchayathRouteImport } from './routes/marking.panchayath'
 import { Route as AdminUsersRouteImport } from './routes/admin.users'
 import { Route as AdminStaffRouteImport } from './routes/admin.staff'
 import { Route as AdminLocationsRouteImport } from './routes/admin.locations'
+import { Route as AuthenticatedMarkingIndexRouteImport } from './routes/_authenticated.marking.index'
+import { Route as AuthenticatedMarkingWardRouteImport } from './routes/_authenticated.marking.ward'
+import { Route as AuthenticatedMarkingPanchayathRouteImport } from './routes/_authenticated.marking.panchayath'
 
 const LandingRoute = LandingRouteImport.update({
   id: '/landing',
@@ -42,30 +43,19 @@ const AdminRoute = AdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRoute = AuthenticatedRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MarkingIndexRoute = MarkingIndexRouteImport.update({
-  id: '/marking/',
-  path: '/marking/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AdminRoute,
-} as any)
-const MarkingWardRoute = MarkingWardRouteImport.update({
-  id: '/marking/ward',
-  path: '/marking/ward',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MarkingPanchayathRoute = MarkingPanchayathRouteImport.update({
-  id: '/marking/panchayath',
-  path: '/marking/panchayath',
-  getParentRoute: () => rootRouteImport,
 } as any)
 const AdminUsersRoute = AdminUsersRouteImport.update({
   id: '/users',
@@ -82,6 +72,24 @@ const AdminLocationsRoute = AdminLocationsRouteImport.update({
   path: '/locations',
   getParentRoute: () => AdminRoute,
 } as any)
+const AuthenticatedMarkingIndexRoute =
+  AuthenticatedMarkingIndexRouteImport.update({
+    id: '/marking/',
+    path: '/marking/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedMarkingWardRoute =
+  AuthenticatedMarkingWardRouteImport.update({
+    id: '/marking/ward',
+    path: '/marking/ward',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedMarkingPanchayathRoute =
+  AuthenticatedMarkingPanchayathRouteImport.update({
+    id: '/marking/panchayath',
+    path: '/marking/panchayath',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -92,10 +100,10 @@ export interface FileRoutesByFullPath {
   '/admin/locations': typeof AdminLocationsRoute
   '/admin/staff': typeof AdminStaffRoute
   '/admin/users': typeof AdminUsersRoute
-  '/marking/panchayath': typeof MarkingPanchayathRoute
-  '/marking/ward': typeof MarkingWardRoute
   '/admin/': typeof AdminIndexRoute
-  '/marking/': typeof MarkingIndexRoute
+  '/marking/panchayath': typeof AuthenticatedMarkingPanchayathRoute
+  '/marking/ward': typeof AuthenticatedMarkingWardRoute
+  '/marking/': typeof AuthenticatedMarkingIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -105,14 +113,15 @@ export interface FileRoutesByTo {
   '/admin/locations': typeof AdminLocationsRoute
   '/admin/staff': typeof AdminStaffRoute
   '/admin/users': typeof AdminUsersRoute
-  '/marking/panchayath': typeof MarkingPanchayathRoute
-  '/marking/ward': typeof MarkingWardRoute
   '/admin': typeof AdminIndexRoute
-  '/marking': typeof MarkingIndexRoute
+  '/marking/panchayath': typeof AuthenticatedMarkingPanchayathRoute
+  '/marking/ward': typeof AuthenticatedMarkingWardRoute
+  '/marking': typeof AuthenticatedMarkingIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/admin': typeof AdminRouteWithChildren
   '/auth': typeof AuthRoute
   '/delivery-partners': typeof DeliveryPartnersRoute
@@ -120,10 +129,10 @@ export interface FileRoutesById {
   '/admin/locations': typeof AdminLocationsRoute
   '/admin/staff': typeof AdminStaffRoute
   '/admin/users': typeof AdminUsersRoute
-  '/marking/panchayath': typeof MarkingPanchayathRoute
-  '/marking/ward': typeof MarkingWardRoute
   '/admin/': typeof AdminIndexRoute
-  '/marking/': typeof MarkingIndexRoute
+  '/_authenticated/marking/panchayath': typeof AuthenticatedMarkingPanchayathRoute
+  '/_authenticated/marking/ward': typeof AuthenticatedMarkingWardRoute
+  '/_authenticated/marking/': typeof AuthenticatedMarkingIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -136,9 +145,9 @@ export interface FileRouteTypes {
     | '/admin/locations'
     | '/admin/staff'
     | '/admin/users'
+    | '/admin/'
     | '/marking/panchayath'
     | '/marking/ward'
-    | '/admin/'
     | '/marking/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -149,13 +158,14 @@ export interface FileRouteTypes {
     | '/admin/locations'
     | '/admin/staff'
     | '/admin/users'
+    | '/admin'
     | '/marking/panchayath'
     | '/marking/ward'
-    | '/admin'
     | '/marking'
   id:
     | '__root__'
     | '/'
+    | '/_authenticated'
     | '/admin'
     | '/auth'
     | '/delivery-partners'
@@ -163,21 +173,19 @@ export interface FileRouteTypes {
     | '/admin/locations'
     | '/admin/staff'
     | '/admin/users'
-    | '/marking/panchayath'
-    | '/marking/ward'
     | '/admin/'
-    | '/marking/'
+    | '/_authenticated/marking/panchayath'
+    | '/_authenticated/marking/ward'
+    | '/_authenticated/marking/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   AdminRoute: typeof AdminRouteWithChildren
   AuthRoute: typeof AuthRoute
   DeliveryPartnersRoute: typeof DeliveryPartnersRoute
   LandingRoute: typeof LandingRoute
-  MarkingPanchayathRoute: typeof MarkingPanchayathRoute
-  MarkingWardRoute: typeof MarkingWardRoute
-  MarkingIndexRoute: typeof MarkingIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -210,18 +218,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/marking/': {
-      id: '/marking/'
-      path: '/marking'
-      fullPath: '/marking/'
-      preLoaderRoute: typeof MarkingIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/': {
@@ -230,20 +238,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/'
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
-    }
-    '/marking/ward': {
-      id: '/marking/ward'
-      path: '/marking/ward'
-      fullPath: '/marking/ward'
-      preLoaderRoute: typeof MarkingWardRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/marking/panchayath': {
-      id: '/marking/panchayath'
-      path: '/marking/panchayath'
-      fullPath: '/marking/panchayath'
-      preLoaderRoute: typeof MarkingPanchayathRouteImport
-      parentRoute: typeof rootRouteImport
     }
     '/admin/users': {
       id: '/admin/users'
@@ -266,8 +260,45 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLocationsRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/_authenticated/marking/': {
+      id: '/_authenticated/marking/'
+      path: '/marking'
+      fullPath: '/marking/'
+      preLoaderRoute: typeof AuthenticatedMarkingIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/marking/ward': {
+      id: '/_authenticated/marking/ward'
+      path: '/marking/ward'
+      fullPath: '/marking/ward'
+      preLoaderRoute: typeof AuthenticatedMarkingWardRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/marking/panchayath': {
+      id: '/_authenticated/marking/panchayath'
+      path: '/marking/panchayath'
+      fullPath: '/marking/panchayath'
+      preLoaderRoute: typeof AuthenticatedMarkingPanchayathRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
   }
 }
+
+interface AuthenticatedRouteChildren {
+  AuthenticatedMarkingPanchayathRoute: typeof AuthenticatedMarkingPanchayathRoute
+  AuthenticatedMarkingWardRoute: typeof AuthenticatedMarkingWardRoute
+  AuthenticatedMarkingIndexRoute: typeof AuthenticatedMarkingIndexRoute
+}
+
+const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedMarkingPanchayathRoute: AuthenticatedMarkingPanchayathRoute,
+  AuthenticatedMarkingWardRoute: AuthenticatedMarkingWardRoute,
+  AuthenticatedMarkingIndexRoute: AuthenticatedMarkingIndexRoute,
+}
+
+const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
+  AuthenticatedRouteChildren,
+)
 
 interface AdminRouteChildren {
   AdminLocationsRoute: typeof AdminLocationsRoute
@@ -287,24 +318,12 @@ const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRoute: AuthenticatedRouteWithChildren,
   AdminRoute: AdminRouteWithChildren,
   AuthRoute: AuthRoute,
   DeliveryPartnersRoute: DeliveryPartnersRoute,
   LandingRoute: LandingRoute,
-  MarkingPanchayathRoute: MarkingPanchayathRoute,
-  MarkingWardRoute: MarkingWardRoute,
-  MarkingIndexRoute: MarkingIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

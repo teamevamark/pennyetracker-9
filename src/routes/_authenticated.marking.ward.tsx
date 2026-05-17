@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
 
-export const Route = createFileRoute("/marking/ward")({
+export const Route = createFileRoute("/_authenticated/marking/ward")({
   component: WardMarking,
   head: () => ({ meta: [{ title: "Ward Marking" }] }),
 });

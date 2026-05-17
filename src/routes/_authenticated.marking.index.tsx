@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Card } from "@/components/ui/card";
 import { MapPinned, Grid3x3, ChevronRight } from "lucide-react";
 
-export const Route = createFileRoute("/marking/")({
+export const Route = createFileRoute("/_authenticated/marking/")({
   component: MarkingHub,
   head: () => ({ meta: [{ title: "Marking — Penny-eTracker" }] }),
 });

@@ -3,7 +3,7 @@ import { GraphCanvas } from "@/components/marking/GraphCanvas";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-export const Route = createFileRoute("/marking/panchayath")({
+export const Route = createFileRoute("/_authenticated/marking/panchayath")({
   component: PanchayathMarking,
   head: () => ({ meta: [{ title: "Panchayath Marking" }] }),
 });
