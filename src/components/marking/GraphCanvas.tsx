@@ -106,12 +106,15 @@ export function GraphCanvas({ cfg }: { cfg: GraphConfig }) {
 
   // All nodes (for search and existing selection)
   const { data: allNodes = [] } = useQuery({
-    queryKey: [cfg.nodesTable, "all"],
+    queryKey: [cfg.nodesTable, "all", cfg.filter?.key, cfg.filter?.value],
     queryFn: async () => {
-      const { data, error } = await supabase.from(cfg.nodesTable).select("*").order("name");
+      let q = supabase.from(cfg.nodesTable).select("*").order("name");
+      if (cfg.filter) q = q.eq(cfg.filter.key, cfg.filter.value);
+      const { data, error } = await q;
       if (error) throw error;
       return data as any[];
     },
+    enabled: cfg.filter ? !!cfg.filter.value : true,
   });
 
   // Connections from current center
