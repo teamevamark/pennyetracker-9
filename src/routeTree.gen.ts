@@ -24,6 +24,7 @@ import { Route as AdminStaffRouteImport } from './routes/admin.staff'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as AdminMappingRouteImport } from './routes/admin.mapping'
 import { Route as AdminLocationsRouteImport } from './routes/admin.locations'
+import { Route as AdminMappingIndexRouteImport } from './routes/admin.mapping.index'
 import { Route as AdminMappingWardRouteImport } from './routes/admin.mapping.ward'
 import { Route as AdminMappingPanchayathRouteImport } from './routes/admin.mapping.panchayath'
 
@@ -102,6 +103,11 @@ const AdminLocationsRoute = AdminLocationsRouteImport.update({
   path: '/locations',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminMappingIndexRoute = AdminMappingIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminMappingRoute,
+} as any)
 const AdminMappingWardRoute = AdminMappingWardRouteImport.update({
   id: '/ward',
   path: '/ward',
@@ -131,6 +137,7 @@ export interface FileRoutesByFullPath {
   '/marking/': typeof MarkingIndexRoute
   '/admin/mapping/panchayath': typeof AdminMappingPanchayathRoute
   '/admin/mapping/ward': typeof AdminMappingWardRoute
+  '/admin/mapping/': typeof AdminMappingIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -138,7 +145,6 @@ export interface FileRoutesByTo {
   '/delivery-partners': typeof DeliveryPartnersRoute
   '/landing': typeof LandingRoute
   '/admin/locations': typeof AdminLocationsRoute
-  '/admin/mapping': typeof AdminMappingRouteWithChildren
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/staff': typeof AdminStaffRoute
   '/admin/users': typeof AdminUsersRoute
@@ -149,6 +155,7 @@ export interface FileRoutesByTo {
   '/marking': typeof MarkingIndexRoute
   '/admin/mapping/panchayath': typeof AdminMappingPanchayathRoute
   '/admin/mapping/ward': typeof AdminMappingWardRoute
+  '/admin/mapping': typeof AdminMappingIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -169,6 +176,7 @@ export interface FileRoutesById {
   '/marking/': typeof MarkingIndexRoute
   '/admin/mapping/panchayath': typeof AdminMappingPanchayathRoute
   '/admin/mapping/ward': typeof AdminMappingWardRoute
+  '/admin/mapping/': typeof AdminMappingIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -190,6 +198,7 @@ export interface FileRouteTypes {
     | '/marking/'
     | '/admin/mapping/panchayath'
     | '/admin/mapping/ward'
+    | '/admin/mapping/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -197,7 +206,6 @@ export interface FileRouteTypes {
     | '/delivery-partners'
     | '/landing'
     | '/admin/locations'
-    | '/admin/mapping'
     | '/admin/settings'
     | '/admin/staff'
     | '/admin/users'
@@ -208,6 +216,7 @@ export interface FileRouteTypes {
     | '/marking'
     | '/admin/mapping/panchayath'
     | '/admin/mapping/ward'
+    | '/admin/mapping'
   id:
     | '__root__'
     | '/'
@@ -227,6 +236,7 @@ export interface FileRouteTypes {
     | '/marking/'
     | '/admin/mapping/panchayath'
     | '/admin/mapping/ward'
+    | '/admin/mapping/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -348,6 +358,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLocationsRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/mapping/': {
+      id: '/admin/mapping/'
+      path: '/'
+      fullPath: '/admin/mapping/'
+      preLoaderRoute: typeof AdminMappingIndexRouteImport
+      parentRoute: typeof AdminMappingRoute
+    }
     '/admin/mapping/ward': {
       id: '/admin/mapping/ward'
       path: '/ward'
@@ -368,11 +385,13 @@ declare module '@tanstack/react-router' {
 interface AdminMappingRouteChildren {
   AdminMappingPanchayathRoute: typeof AdminMappingPanchayathRoute
   AdminMappingWardRoute: typeof AdminMappingWardRoute
+  AdminMappingIndexRoute: typeof AdminMappingIndexRoute
 }
 
 const AdminMappingRouteChildren: AdminMappingRouteChildren = {
   AdminMappingPanchayathRoute: AdminMappingPanchayathRoute,
   AdminMappingWardRoute: AdminMappingWardRoute,
+  AdminMappingIndexRoute: AdminMappingIndexRoute,
 }
 
 const AdminMappingRouteWithChildren = AdminMappingRoute._addFileChildren(
