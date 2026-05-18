@@ -3,8 +3,10 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { MapPicker } from "@/components/map/MapPicker";
+import { GraphCanvas } from "@/components/marking/GraphCanvas";
 import { useGoogleMapsKey } from "@/hooks/use-google-maps-key";
 
 export const Route = createFileRoute("/admin/mapping/panchayath")({
@@ -33,14 +35,35 @@ function PanchayathMap() {
         </Button>
         <h1 className="text-2xl font-bold tracking-tight">Panchayath Map</h1>
       </div>
-      <MapPicker
-        kind="panchayath"
-        apiKey={apiKey}
-        parents={districts}
-        parentId={districtId}
-        onParentChange={setDistrictId}
-        parentLabel="District"
-      />
+
+      <Tabs defaultValue="pin">
+        <TabsList>
+          <TabsTrigger value="pin">Map pin</TabsTrigger>
+          <TabsTrigger value="neighbours">Neighbours (N/S/E/W)</TabsTrigger>
+        </TabsList>
+        <TabsContent value="pin" className="mt-4">
+          <MapPicker
+            kind="panchayath"
+            apiKey={apiKey}
+            parents={districts}
+            parentId={districtId}
+            onParentChange={setDistrictId}
+            parentLabel="District"
+          />
+        </TabsContent>
+        <TabsContent value="neighbours" className="mt-4">
+          <GraphCanvas
+            cfg={{
+              label: "Panchayath",
+              nodesTable: "panchayaths",
+              edgesTable: "panchayath_connections",
+              srcCol: "source_panchayath_id",
+              tgtCol: "target_panchayath_id",
+              parentRef: { key: "district_id", label: "District", table: "districts" },
+            }}
+          />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
