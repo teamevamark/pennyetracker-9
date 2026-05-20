@@ -98,7 +98,7 @@ export function OfflineMap({ markers, className, emptyState }: Props) {
               const stmt = db.prepare(
                 "SELECT tile_data FROM tiles WHERE zoom_level=? AND tile_column=? AND tile_row=?",
               );
-              stmt.bind([coords.z, coords.x, y]);
+              stmt.bind([coords.z, coords.x, y] as any);
               if (stmt.step()) {
                 const row = stmt.get();
                 const bytes = row[0] as Uint8Array;
