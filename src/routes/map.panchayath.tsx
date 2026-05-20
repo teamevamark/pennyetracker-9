@@ -9,6 +9,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { useGoogleMaps } from "@/components/map/useGoogleMaps";
 import { GraphCanvas } from "@/components/marking/GraphCanvas";
 import { loadCachedPoints, saveCachedPoints, type GeoPoint } from "@/lib/geoCache";
+import { OfflineMap, type OfflineMarker } from "@/components/map/OfflineMap";
+import { useServerFn } from "@tanstack/react-start";
+import { getOfflineMbtilesSignedUrl } from "@/lib/offline-map.functions";
 
 export const Route = createFileRoute("/map/panchayath")({
   component: PublicPanchayathMap,
@@ -69,6 +72,16 @@ function PinMapView() {
   });
 
   const mapState = useGoogleMaps(apiKey ?? null);
+
+  const fetchOfflineMeta = useServerFn(getOfflineMbtilesSignedUrl);
+  const { data: offlineMeta } = useQuery({
+    queryKey: ["offline_mbtiles_meta"],
+    queryFn: () => fetchOfflineMeta(),
+    staleTime: 5 * 60_000,
+  });
+  const hasOfflineMap = !!offlineMeta;
+  const useOffline =
+    hasOfflineMap && (!apiKey || mapState === "error" || (typeof navigator !== "undefined" && !navigator.onLine));
 
   const [cached, setCached] = useState<GeoPoint[]>([]);
   useEffect(() => {
@@ -159,7 +172,18 @@ function PinMapView() {
   return (
     <>
       <div className="mb-2 text-sm text-muted-foreground">{visible.length} marked</div>
-      {!apiKey || mapState === "error" ? (
+      {useOffline ? (
+        <OfflineMap
+          markers={visible
+            .filter((p) => p.lat != null && p.lng != null)
+            .map<OfflineMarker>((p) => ({
+              id: p.id,
+              name: p.name,
+              lat: p.lat as number,
+              lng: p.lng as number,
+            }))}
+        />
+      ) : !apiKey || mapState === "error" ? (
         <Card>
           <CardContent className="p-4">
             <div className="mb-3 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-900 dark:border-amber-900/50 dark:bg-amber-950/40 dark:text-amber-200">
