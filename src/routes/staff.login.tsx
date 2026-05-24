@@ -6,6 +6,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 
+const staffPhoneToEmail = (value: string) => {
+  const digits = value.replace(/\D/g, "");
+  if (!digits) throw new Error("Enter a valid mobile number");
+  return `staff-${digits}@staff.penny-etracker.local`;
+};
+
 export const Route = createFileRoute("/staff/login")({
   component: StaffLoginPage,
   head: () => ({ meta: [{ title: "Staff Sign In — Penny-eTracker" }] }),
@@ -23,12 +29,13 @@ function StaffLoginPage() {
     setErr(null);
     setLoading(true);
     try {
-      const normalized = phone.startsWith("+") ? phone : `+${phone}`;
-      const { data, error } = await supabase.auth.signInWithPassword({ phone: normalized, password });
+      const email = staffPhoneToEmail(phone);
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) throw error;
       const uid = data.user?.id;
       if (!uid) throw new Error("Sign-in failed");
-      const { data: roles } = await supabase.from("user_roles").select("role").eq("user_id", uid);
+      const { data: roles, error: rolesError } = await supabase.from("user_roles").select("role").eq("user_id", uid);
+      if (rolesError) throw rolesError;
       const list = (roles ?? []).map((r) => r.role);
       if (list.includes("admin") || list.includes("super_admin")) {
         navigate({ to: "/landing" });
