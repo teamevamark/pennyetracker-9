@@ -36,7 +36,7 @@ const features = [
   {
     icon: Navigation,
     title: "Update Location",
-    to: null,
+    to: "/update-location" as const,
     gradient: "from-[oklch(0.6_0.2_180)] via-[oklch(0.65_0.2_210)] to-[oklch(0.7_0.2_240)]",
   },
   {
