@@ -123,7 +123,12 @@ function AdminLayout() {
             </Sheet>
             <Link to="/landing" className="font-semibold">Penny-eTracker</Link>
           </div>
-          <Button onClick={signOut} variant="ghost" size="icon" aria-label="Sign out"><LogOut className="h-4 w-4" /></Button>
+          <div className="flex items-center gap-1">
+            <Link to="/" className="flex h-9 w-9 items-center justify-center rounded-md hover:bg-accent" aria-label="Home">
+              <Home className="h-4 w-4" />
+            </Link>
+            <Button onClick={signOut} variant="ghost" size="icon" aria-label="Sign out"><LogOut className="h-4 w-4" /></Button>
+          </div>
         </header>
         <div className="mx-auto w-full max-w-6xl p-4 sm:p-6">
           <Outlet />
