@@ -1,5 +1,5 @@
 // Edge function: staff-signup (public)
-// Creates a pending staff account via phone+password using the service role key.
+// Creates a pending staff account via mobile-number-derived email + password using the service role key.
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 
 const corsHeaders = {
@@ -32,17 +32,18 @@ Deno.serve(async (req) => {
     if (!panchayath_id || !ward_id) return json({ error: "Panchayath and ward required" }, 400);
 
     const phone = rawPhone.startsWith("+") ? rawPhone : `+${rawPhone}`;
+    const email = `staff-${rawPhone.replace(/\D/g, "")}@staff.penny-etracker.local`;
 
     const { data: created, error: cErr } = await admin.auth.admin.createUser({
-      phone,
+      email,
       password,
-      phone_confirm: true,
-      user_metadata: { full_name, pending: "true" },
+      email_confirm: true,
+      user_metadata: { full_name, phone, pending: "true" },
     });
     if (cErr || !created.user) return json({ error: cErr?.message ?? "Failed to create account" }, 400);
     const userId = created.user.id;
 
-    await admin.from("profiles").upsert({ id: userId, full_name, phone });
+    await admin.from("profiles").upsert({ id: userId, full_name, phone, email });
 
     const { data: staff, error: sErr } = await admin
       .from("delivery_staff")
