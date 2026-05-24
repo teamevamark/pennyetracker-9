@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { LayoutDashboard, Users, MapPin, Map as MapIcon, Settings, ShieldCheck, LogOut, Menu } from "lucide-react";
+import { LayoutDashboard, Users, MapPin, Map as MapIcon, Settings, ShieldCheck, LogOut, Menu, Home } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/admin")({
