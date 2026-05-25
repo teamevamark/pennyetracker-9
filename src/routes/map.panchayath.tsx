@@ -12,6 +12,7 @@ import { loadCachedPoints, saveCachedPoints, type GeoPoint } from "@/lib/geoCach
 import { OfflineMap, type OfflineMarker } from "@/components/map/OfflineMap";
 import { useServerFn } from "@tanstack/react-start";
 import { getOfflineMbtilesSignedUrl } from "@/lib/offline-map.functions";
+import { LeafletMap, type LeafletMarker } from "@/components/map/LeafletMap";
 
 export const Route = createFileRoute("/map/panchayath")({
   component: PublicPanchayathMap,
