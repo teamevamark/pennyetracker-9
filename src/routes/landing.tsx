@@ -60,7 +60,7 @@ function Landing() {
   useEffect(() => {
     if (loading) return;
     if (!user) {
-      navigate({ to: "/auth" });
+      navigate({ to: "/staff/login" });
       return;
     }
     if (isAdmin) return;
