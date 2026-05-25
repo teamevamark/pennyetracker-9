@@ -25,6 +25,7 @@ import { Route as StaffLoginRouteImport } from './routes/staff.login'
 import { Route as MarkingWardRouteImport } from './routes/marking.ward'
 import { Route as MarkingPanchayathRouteImport } from './routes/marking.panchayath'
 import { Route as MapPanchayathRouteImport } from './routes/map.panchayath'
+import { Route as DeliveryDashboardRouteImport } from './routes/delivery.dashboard'
 import { Route as AdminUsersRouteImport } from './routes/admin.users'
 import { Route as AdminStaffRouteImport } from './routes/admin.staff'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
@@ -115,6 +116,11 @@ const MapPanchayathRoute = MapPanchayathRouteImport.update({
   path: '/map/panchayath',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DeliveryDashboardRoute = DeliveryDashboardRouteImport.update({
+  id: '/delivery/dashboard',
+  path: '/delivery/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminUsersRoute = AdminUsersRouteImport.update({
   id: '/users',
   path: '/users',
@@ -167,6 +173,7 @@ export interface FileRoutesByFullPath {
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/staff': typeof AdminStaffRoute
   '/admin/users': typeof AdminUsersRoute
+  '/delivery/dashboard': typeof DeliveryDashboardRoute
   '/map/panchayath': typeof MapPanchayathRoute
   '/marking/panchayath': typeof MarkingPanchayathRoute
   '/marking/ward': typeof MarkingWardRoute
@@ -191,6 +198,7 @@ export interface FileRoutesByTo {
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/staff': typeof AdminStaffRoute
   '/admin/users': typeof AdminUsersRoute
+  '/delivery/dashboard': typeof DeliveryDashboardRoute
   '/map/panchayath': typeof MapPanchayathRoute
   '/marking/panchayath': typeof MarkingPanchayathRoute
   '/marking/ward': typeof MarkingWardRoute
@@ -218,6 +226,7 @@ export interface FileRoutesById {
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/staff': typeof AdminStaffRoute
   '/admin/users': typeof AdminUsersRoute
+  '/delivery/dashboard': typeof DeliveryDashboardRoute
   '/map/panchayath': typeof MapPanchayathRoute
   '/marking/panchayath': typeof MarkingPanchayathRoute
   '/marking/ward': typeof MarkingWardRoute
@@ -246,6 +255,7 @@ export interface FileRouteTypes {
     | '/admin/settings'
     | '/admin/staff'
     | '/admin/users'
+    | '/delivery/dashboard'
     | '/map/panchayath'
     | '/marking/panchayath'
     | '/marking/ward'
@@ -270,6 +280,7 @@ export interface FileRouteTypes {
     | '/admin/settings'
     | '/admin/staff'
     | '/admin/users'
+    | '/delivery/dashboard'
     | '/map/panchayath'
     | '/marking/panchayath'
     | '/marking/ward'
@@ -296,6 +307,7 @@ export interface FileRouteTypes {
     | '/admin/settings'
     | '/admin/staff'
     | '/admin/users'
+    | '/delivery/dashboard'
     | '/map/panchayath'
     | '/marking/panchayath'
     | '/marking/ward'
@@ -318,6 +330,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   DeliveryPartnersRoute: typeof DeliveryPartnersRoute
   LandingRoute: typeof LandingRoute
+  DeliveryDashboardRoute: typeof DeliveryDashboardRoute
   MapPanchayathRoute: typeof MapPanchayathRoute
   MarkingPanchayathRoute: typeof MarkingPanchayathRoute
   MarkingWardRoute: typeof MarkingWardRoute
@@ -444,6 +457,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MapPanchayathRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/delivery/dashboard': {
+      id: '/delivery/dashboard'
+      path: '/delivery/dashboard'
+      fullPath: '/delivery/dashboard'
+      preLoaderRoute: typeof DeliveryDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/users': {
       id: '/admin/users'
       path: '/users'
@@ -545,6 +565,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   DeliveryPartnersRoute: DeliveryPartnersRoute,
   LandingRoute: LandingRoute,
+  DeliveryDashboardRoute: DeliveryDashboardRoute,
   MapPanchayathRoute: MapPanchayathRoute,
   MarkingPanchayathRoute: MarkingPanchayathRoute,
   MarkingWardRoute: MarkingWardRoute,
