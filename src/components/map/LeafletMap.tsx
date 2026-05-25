@@ -94,15 +94,15 @@ export function LeafletMap({
   focus,
   fitToMarkers = true,
 }: Props) {
-  if (typeof window === "undefined") {
-    return <div style={{ height, width: "100%" }} className="rounded-md bg-muted" />;
-  }
   const initialCenter = useMemo(
     () => center ?? (markers[0] ? { lat: markers[0].lat, lng: markers[0].lng } : DEFAULT_CENTER),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
   const initialZoom = zoom ?? (markers[0] ? 12 : DEFAULT_ZOOM);
+  if (typeof window === "undefined") {
+    return <div style={{ height, width: "100%" }} className="rounded-md bg-muted" />;
+  }
 
   return (
     <div style={{ height, width: "100%" }} className="overflow-hidden rounded-md">
