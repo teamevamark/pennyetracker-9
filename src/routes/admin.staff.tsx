@@ -19,6 +19,7 @@ export const Route = createFileRoute("/admin/staff")({ component: StaffPage });
 
 type Staff = {
   id: string;
+  user_id: string | null;
   full_name: string;
   phone: string;
   alt_phone: string | null;
@@ -26,6 +27,7 @@ type Staff = {
   status: string;
   delivery_staff_panchayaths: { panchayath_id: string; panchayaths: { name: string } | null }[];
   delivery_staff_wards: { ward_id: string; wards: { name: string; ward_number: string | null; panchayath_id: string } | null }[];
+  roles?: string[];
 };
 
 function StaffPage() {
